@@ -1,0 +1,21 @@
+[Unit]
+Description=cephissus web echo server
+ConditionPathExists=/home/ubuntu/code/cephissus
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/home/ubuntu/code/cephissus
+ExecStart=go run .
+StandardError=file:/home/ubuntu/code/cephissus/logs/error.log
+StandardOutput=file:/home/ubuntu/code/cephissus/logs/output.log
+Restart=on-failure
+RestartSec=10
+SyslogIdentifier=cephissus
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+
+
+[Install]
+WantedBy=multi-user.target
