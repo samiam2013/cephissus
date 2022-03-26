@@ -10,7 +10,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", narcissus)
-	err := http.ListenAndServe(":80", nil)
+	err := http.ListenAndServe(":3000", nil)
 	if err != nil {
 		log.Println(err.Error())
 	}
