@@ -18,3 +18,5 @@
 main
 cephissus
 
+# Don't keep any logs
+**/*.log
