@@ -19,29 +19,32 @@ func main() {
 // Req allows for marshalling the request data for JSON
 type Req struct {
 	Headers map[string][]string `json:"headers"`
-	Body    string              `json:"body"`
+	Get     map[string][]string `json:"get"`
+	Body    []byte              `json:"body"`
 }
 
 func narcissus(w http.ResponseWriter, r *http.Request) {
 	req := Req{
 		Headers: map[string][]string{},
-		Body:    "",
+		Get:     map[string][]string{},
+		Body:    []byte{},
 	}
 
-	// Loop over header names
+	// must accept multiple values for each header
 	for name, values := range r.Header {
-		// Loop over all values for the name.
 		req.Headers[name] = append(req.Headers[name], values...)
-
 	}
 
-	bytes, err := ioutil.ReadAll(r.Body)
-	r.Body.Close()
+	for k, v := range r.URL.Query() {
+		req.Get[k] = append(req.Get[k], v...)
+	}
 
+	defer r.Body.Close()
+	bytes, err := ioutil.ReadAll(r.Body)
 	if err != nil {
 		log.Fatal(err.Error())
 	}
-	req.Body = string(bytes)
+	req.Body = bytes
 
 	toWrite, err := json.Marshal(req)
 	if err != nil {
