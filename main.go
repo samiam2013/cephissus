@@ -8,9 +8,17 @@ import (
 	"strconv"
 )
 
+const debug = true
+const defaultPort = ":3000"
+const debugPort = ":80"
+
 func main() {
 	http.HandleFunc("/", narcissus)
-	err := http.ListenAndServe(":3000", nil)
+	port := defaultPort
+	if debug {
+		port = debugPort
+	}
+	err := http.ListenAndServe(port, nil)
 	if err != nil {
 		log.Println(err.Error())
 	}
@@ -63,6 +71,7 @@ func narcissus(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 
+	w.Header().Add("Content-Type", "application/json")
 	// because it's like the still lake he looked into
 	w.Header().Add("x-powered-by", "narcissus()")
 	// post to here from anywhere. I don't particularly care.
