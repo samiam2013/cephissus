@@ -7,26 +7,26 @@ import (
 	"testing"
 )
 
-var _ http.ResponseWriter = response{}
+var _ http.ResponseWriter = testResp{}
 
-type response struct {
+type testResp struct {
 	header map[string][]string
 	body   bytes.Buffer
 	Status int
 }
 
 // Header implements http.ResponseWriter
-func (r response) Header() http.Header {
+func (r testResp) Header() http.Header {
 	return r.header
 }
 
 // Write implements http.ResponseWriter
-func (r response) Write(b []byte) (n int, err error) {
+func (r testResp) Write(b []byte) (n int, err error) {
 	return r.body.Write(b)
 }
 
 // WriteHeader implements http.ResponseWriter
-func (r response) WriteHeader(statusCode int) {
+func (r testResp) WriteHeader(statusCode int) {
 	r.Status = statusCode
 }
 
@@ -39,7 +39,7 @@ func BenchmarkNarcissus(b *testing.B) {
 	}
 
 	for i := 0; i < b.N; i++ {
-		w := response{
+		w := testResp{
 			header: map[string][]string{},
 			body:   bytes.Buffer{},
 			Status: 0,
