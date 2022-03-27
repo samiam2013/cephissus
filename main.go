@@ -55,7 +55,8 @@ func narcissus(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// POST variables
-	if err := r.ParseForm(); err != nil {
+	var err error
+	if err = r.ParseForm(); err != nil {
 		log.Fatal(err.Error())
 	}
 	for k, v := range r.PostForm {
@@ -64,16 +65,14 @@ func narcissus(w http.ResponseWriter, r *http.Request) {
 
 	// body request data (like JSON/XML)
 	defer r.Body.Close()
-	bytes, err := ioutil.ReadAll(r.Body)
-	if err != nil {
+	if req.Body, err = ioutil.ReadAll(r.Body); err != nil {
 		log.Fatal(err.Error())
 	}
-	req.Body = bytes
 
 	req.SourceURL = "https://github.com/samiam2013/cephissus"
 
-	toWrite, err := json.Marshal(req)
-	if err != nil {
+	var toWrite []byte
+	if toWrite, err = json.Marshal(req); err != nil {
 		log.Fatal(err.Error())
 	}
 
@@ -82,8 +81,7 @@ func narcissus(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("x-powered-by", "narcissus()")
 	// post to here from anywhere. I don't particularly care.
 	w.Header().Add("Access-Control-Allow-Origin", "*")
-	strRepLen := strconv.Itoa(len(toWrite))
-	w.Header().Add("Content-Length", strRepLen)
+	w.Header().Add("Content-Length", strconv.Itoa(len(toWrite)))
 	written, err := w.Write(toWrite)
 	if err != nil {
 		log.Fatal(err.Error())
