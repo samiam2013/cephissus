@@ -20,3 +20,6 @@ cephissus
 
 # Don't keep any logs
 **/*.log
+
+# this was for letsencrypt
+htdocs/
