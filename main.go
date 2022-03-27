@@ -5,19 +5,22 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 )
 
-const debug = true
 const defaultPort = ":3000"
 const debugPort = ":80"
 
 func main() {
 	http.HandleFunc("/", narcissus)
+	//debug := false
 	port := defaultPort
-	if debug {
+	if _, err := os.Stat(".debug"); err == nil {
+		//debug = true
 		port = debugPort
 	}
+
 	err := http.ListenAndServe(port, nil)
 	if err != nil {
 		log.Println(err.Error())
@@ -26,10 +29,11 @@ func main() {
 
 // Req allows for marshalling the request data for JSON
 type Req struct {
-	Headers map[string][]string `json:"headers"`
-	Get     map[string][]string `json:"get"`
-	Post    map[string][]string `json:"post"`
-	Body    []byte              `json:"body"`
+	Headers   map[string][]string `json:"headers"`
+	Get       map[string][]string `json:"get"`
+	Post      map[string][]string `json:"post"`
+	Body      []byte              `json:"body"`
+	SourceURL string              `json:"source_code_available_at"`
 }
 
 func narcissus(w http.ResponseWriter, r *http.Request) {
@@ -65,6 +69,8 @@ func narcissus(w http.ResponseWriter, r *http.Request) {
 		log.Fatal(err.Error())
 	}
 	req.Body = bytes
+
+	req.SourceURL = "https://github.com/samiam2013/cephissus"
 
 	toWrite, err := json.Marshal(req)
 	if err != nil {
