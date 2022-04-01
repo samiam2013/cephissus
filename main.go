@@ -107,7 +107,7 @@ func narcissus(w http.ResponseWriter, r *http.Request) {
 }
 
 func testForm(w http.ResponseWriter, r *http.Request) {
-	http.ServFile(w, r, "./htdocs/index.html")
+	http.ServeFile(w, r, "./htdocs/index.html")
 }
 
 // isFile checks that there is a single argument and it looks like a file
