@@ -23,3 +23,6 @@ cephissus
 
 # allow for a debug flag file `.debug`
 .debug
+
+# don't need to share this silly deploy script
+deploy
