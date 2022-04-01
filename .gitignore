@@ -25,4 +25,5 @@ cephissus
 .debug
 
 # don't need to share this silly deploy script
-deploy
+remote_build
+remote_deploy
