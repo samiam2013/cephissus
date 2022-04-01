@@ -21,8 +21,5 @@ cephissus
 # Don't keep any logs
 **/*.log
 
-# this was for letsencrypt
-htdocs/
-
 # allow for a debug flag file `.debug`
 .debug
