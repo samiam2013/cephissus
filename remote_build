@@ -18,4 +18,4 @@ if [[ -z "$REMOTE_PATH" ]] ; then
     exit;
 fi;
 
-ssh $user@$host "cd $remote_path && git pull && echo && go build -v ."
+ssh "$REMOTE_USER@$REMOTE_HOST" "cd $REMOTE_PATH && git pull && echo && go build -v ."
