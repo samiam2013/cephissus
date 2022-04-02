@@ -24,6 +24,7 @@ cephissus
 # allow for a debug flag file `.debug`
 .debug
 
-# don't need to share this silly deploy script
-remote_build
-remote_deploy
+
+# .env file for the remote_(build|deploy)
+.env
+**/.env

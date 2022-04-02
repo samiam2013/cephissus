@@ -1,0 +1,21 @@
+#!/bin/bash
+DOTENV="./.env"
+
+export $(grep -v '#.*' "$DOTENV" | xargs)
+
+if [[ -z "$REMOTE_USER" ]] ; then 
+    echo "user must not be empty, check $DOTENV";
+    exit;
+fi;
+
+if [[ -z "$REMOTE_HOST" ]] ; then 
+    echo "REMOTE_HOST must not be empty, check $DOTENV";
+    exit;
+fi;
+
+if [[ -z "$REMOTE_PATH" ]] ; then
+    echo "REMOTE_PATH must not be empty, check $DOTENV";
+    exit;
+fi;
+
+ssh $user@$host "cd $remote_path && git pull && echo && go build -v ."

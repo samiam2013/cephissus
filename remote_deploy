@@ -1,0 +1,33 @@
+#!/bin/bash
+
+DOTENV="./.env"
+
+export $(grep -v '#.*' "$DOTENV" | xargs)
+
+if [[ -z "$REMOTE_USER" ]] ; then 
+    echo "user must not be empty, check $DOTENV";
+    exit;
+fi;
+
+if [[ -z "$REMOTE_HOST" ]] ; then 
+    echo "REMOTE_HOST must not be empty, check $DOTENV";
+    exit;
+fi;
+
+if [[ -z "$REMOTE_PATH" ]] ; then
+    echo "REMOTE_PATH must not be empty, check $DOTENV";
+    exit;
+fi;
+
+read -s -p "Your password for reload: " PW;
+
+ssh "$REMOTE_USER@$REMOTE_HOST" "cd $REMOTE_PATH && 
+                    echo $PW | sudo -S service cephissus restart &&
+                    echo 'waiting 30 seconds for services to load' &&
+                    sleep 15 && 
+                    echo '15 seconds left' && 
+                    sleep 15 &&  
+                    sudo -S service cephissus status";
+
+
+                    
