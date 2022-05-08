@@ -18,10 +18,8 @@ const debugPort = ":80"
 func main() {
 	http.HandleFunc("/", narcissus)
 	http.HandleFunc("/testForm", testForm)
-	//debug := false
 	port := defaultPort
 	if _, err := os.Stat(".debug"); err == nil {
-		//debug = true
 		port = debugPort
 	}
 
